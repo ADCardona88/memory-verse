@@ -54,7 +54,7 @@ Each step is one small thing she can see, with a sentence that says how we know 
 2. **Practice one built-in verse.** Use one short verse built into the app (no internet yet). She reads it, moves to a text box where the verse is hidden, and types it from memory. Congratulations appear on their own as soon as it's correct, using the rules in "What counts as correct." When she gets it right, the keyboard closes so congratulations stays visible on the phone.
    I'll know it works when I type the verse with different capitals and no punctuation and still get congratulations without pressing anything, and the keyboard is gone so I can read the message.
 
-3. **No pasting.** I'll know it works when I try to paste into the box and nothing goes in.
+3. **No pasting or dragging in.** I'll know it works when I try to paste or drag text into the box and nothing goes in.
 
 4. **Encouragement when wrong.** A Submit button checks her answer. If it's wrong, she sees an encouraging verse, like Psalm 119:11 or Psalm 1, telling her to keep going.
    I'll know it works when I press Submit with a wrong answer and see the encouraging message.

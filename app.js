@@ -87,4 +87,12 @@ welcomeForm.addEventListener("submit", function (event) {
 
 practiceInput.addEventListener("input", checkPracticeInput);
 
+practiceInput.addEventListener("paste", function (event) {
+  event.preventDefault();
+});
+
+practiceInput.addEventListener("drop", function (event) {
+  event.preventDefault();
+});
+
 start();
