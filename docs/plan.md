@@ -80,3 +80,6 @@ Each step is one small thing she can see, with a sentence that says how we know 
 
 ## Open questions
 - Does Tyndale require a copyright line shown with NLT verses? Check before step 6.
+
+## Known issues
+- Safari can offer to block the browser confirm pop-up used when she taps to see the verse. If she blocks it, peeking stops working. Fix later with our own in-page pop-up.
