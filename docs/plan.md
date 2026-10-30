@@ -30,7 +30,7 @@ Her typed verse is correct when the words match the verse in the same order, ign
 - capital letters,
 - punctuation (periods, commas, quotes, dashes),
 - extra spaces or line breaks,
-- curly versus straight quotes and apostrophes.
+- apostrophes (straight or curly), so "don't" matches "dont".
 The verse reference, verse numbers, and footnotes from Tyndale are never part of what she types.
 
 ## How the two counters work

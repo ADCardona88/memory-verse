@@ -4,16 +4,16 @@
   padding: 0;
 }
 
+html,
 body {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 100%;
+}
+
+body {
   background: #f0f4f1;
   color: #1a2e1f;
   font-family: Georgia, "Times New Roman", serif;
   text-align: center;
-  padding: 2rem;
 }
 
 h1 {
@@ -27,6 +27,19 @@ p,
 label {
   font-size: 1.75rem;
   color: #3d5a45;
+}
+
+#name-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+#name-screen[hidden] {
+  display: none;
 }
 
 #name-form label {
@@ -79,4 +92,80 @@ button:focus {
 button:focus {
   outline: 3px solid #7a9e82;
   outline-offset: 2px;
+}
+
+#practice-flow {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+#practice-flow[hidden] {
+  display: none;
+}
+
+.snap-section {
+  min-height: 100vh;
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1.25rem;
+}
+
+.verse-reference {
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5a7a62;
+}
+
+.verse-text {
+  font-size: 2rem;
+  line-height: 1.4;
+  color: #1a2e1f;
+  max-width: 28rem;
+}
+
+.scroll-hint {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  color: #7a9e82;
+}
+
+#practice-section label {
+  display: block;
+}
+
+#practice-input {
+  width: min(100%, 28rem);
+  min-height: 10rem;
+  font-size: 1.5rem;
+  font-family: inherit;
+  line-height: 1.4;
+  color: #1a2e1f;
+  padding: 1rem;
+  border: 2px solid #3d5a45;
+  border-radius: 0.5rem;
+  background: #fff;
+  resize: vertical;
+}
+
+#practice-input:focus {
+  outline: 3px solid #7a9e82;
+  outline-offset: 2px;
+}
+
+#congratulations {
+  font-size: 2rem;
+  color: #2f5d3a;
+}
+
+#congratulations[hidden] {
+  display: none;
 }

@@ -1,11 +1,20 @@
 var STORAGE_KEY = "memoryVerseName";
 var MAX_NAME_LENGTH = 30;
 
+var BUILT_IN_REFERENCE = "Psalm 119:11";
+var BUILT_IN_VERSE =
+  "I have hidden your word in my heart, that I might not sin against you.";
+
+var nameScreen = document.getElementById("name-screen");
 var nameFormSection = document.getElementById("name-form");
-var welcomeSection = document.getElementById("welcome");
-var welcomeName = document.getElementById("welcome-name");
 var welcomeForm = document.getElementById("welcome-form");
 var nameInput = document.getElementById("name-input");
+var practiceFlow = document.getElementById("practice-flow");
+var welcomeName = document.getElementById("welcome-name");
+var verseReference = document.getElementById("verse-reference");
+var verseText = document.getElementById("verse-text");
+var practiceInput = document.getElementById("practice-input");
+var congratulations = document.getElementById("congratulations");
 
 function getSavedName() {
   var saved = localStorage.getItem(STORAGE_KEY);
@@ -19,22 +28,34 @@ function saveName(name) {
   localStorage.setItem(STORAGE_KEY, name);
 }
 
-function showWelcome(name) {
-  welcomeName.textContent = name;
-  nameFormSection.hidden = true;
-  welcomeSection.hidden = false;
-}
-
 function showNameForm() {
-  welcomeSection.hidden = true;
+  practiceFlow.hidden = true;
+  nameScreen.hidden = false;
   nameFormSection.hidden = false;
   nameInput.focus();
+}
+
+function showPractice(name) {
+  welcomeName.textContent = name;
+  verseReference.textContent = BUILT_IN_REFERENCE;
+  verseText.textContent = BUILT_IN_VERSE;
+  practiceInput.value = "";
+  congratulations.hidden = true;
+
+  nameScreen.hidden = true;
+  practiceFlow.hidden = false;
+  practiceFlow.scrollTop = 0;
+}
+
+function checkPracticeInput() {
+  var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
+  congratulations.hidden = !correct;
 }
 
 function start() {
   var name = getSavedName();
   if (name) {
-    showWelcome(name);
+    showPractice(name);
   } else {
     showNameForm();
   }
@@ -50,7 +71,9 @@ welcomeForm.addEventListener("submit", function (event) {
   }
 
   saveName(name);
-  showWelcome(name);
+  showPractice(name);
 });
+
+practiceInput.addEventListener("input", checkPracticeInput);
 
 start();

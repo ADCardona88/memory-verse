@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
+    <main id="name-screen">
       <h1>Memory Verse</h1>
 
       <section id="name-form" hidden>
@@ -24,11 +24,32 @@
           <button type="submit">Continue</button>
         </form>
       </section>
-
-      <section id="welcome" hidden>
-        <p>Welcome back, <span id="welcome-name"></span>.</p>
-      </section>
     </main>
+
+    <div id="practice-flow" hidden>
+      <section id="read-section" class="snap-section">
+        <h1>Memory Verse</h1>
+        <p>Welcome back, <span id="welcome-name"></span>.</p>
+        <p id="verse-reference" class="verse-reference"></p>
+        <p id="verse-text" class="verse-text"></p>
+        <p class="scroll-hint">Scroll down to practice</p>
+      </section>
+
+      <section id="practice-section" class="snap-section">
+        <label for="practice-input">Type the verse from memory</label>
+        <textarea
+          id="practice-input"
+          rows="5"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        ></textarea>
+        <p id="congratulations" hidden>Congratulations!</p>
+      </section>
+    </div>
+
+    <script src="verse-check.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
