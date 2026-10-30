@@ -62,7 +62,7 @@ Each step is one small thing she can see, with a sentence that says how we know 
 5. **Peeking clears the box.** As soon as she types anything, the verse hides and a "Tap to see the verse" message takes its place. Tapping it asks: "Looking at the verse will clear what you typed. Continue?" Confirm clears her typing and shows the verse again; cancel leaves her typing and keeps the verse hidden. If she empties the box by deleting, the verse comes back with no prompt.
    I'll know it works when I type something, see the tap message instead of the verse, confirm, and the box is empty with the verse showing.
 
-6. **Pick any real verse.** A simple book, chapter, and verse picker loads the real NLT text from Tyndale. Only real verses can be picked.
+6. **Pick any real verse (done).** A simple book, chapter, and verse picker loads the real NLT text from Tyndale. Only real verses can be picked.
    I'll know it works when I pick a verse and see its real NLT text, then practice it the same way as step 2.
 
 7. **Friendly failures.** I'll know it works when a verse can't load, or the iPad is offline, and she sees a friendly message instead of a broken page.
@@ -78,8 +78,14 @@ Each step is one small thing she can see, with a sentence that says how we know 
 
 12. **Real use.** I'll know version one works when my daughter uses it on her own for a few days and her streak is counting.
 
+13. **Compact verse picker.** Make the book, chapter, and verse controls feel like how kids say a reference (e.g. John 3:16), not a labeled form with "Book", "Chapter", and "Verse". Keep allowing only real books, chapters, and verses. Keep it compact so it doesn't take much space.
+    I'll know it works when I can still select only valid books, chapters, and verses of the Bible, and the picker doesn't take up a lot of space.
+
+14. **Attribution at the bottom.** Move the NLT copyright line to the bottom of the page, still meeting Tyndale's requirements.
+    I'll know it works when the attribution meets Tyndale's requirements and is at the bottom of the page.
+
 ## Open questions
-- Does Tyndale require a copyright line shown with NLT verses? Check before step 6.
+- (none)
 
 ## Known issues
 - Safari can offer to block the browser confirm pop-up used when she taps to see the verse. If she blocks it, peeking stops working. Fix later with our own in-page pop-up.

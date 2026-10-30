@@ -1,9 +1,13 @@
 var STORAGE_KEY = "memoryVerseName";
+var VERSE_CACHE_PREFIX = "memoryVerseText:";
 var MAX_NAME_LENGTH = 30;
 
 var BUILT_IN_REFERENCE = "Psalm 119:11";
 var BUILT_IN_VERSE =
   "I have hidden your word in my heart, that I might not sin against you.";
+
+var currentReference = BUILT_IN_REFERENCE;
+var currentVerseText = BUILT_IN_VERSE;
 
 var nameScreen = document.getElementById("name-screen");
 var nameFormSection = document.getElementById("name-form");
@@ -11,6 +15,10 @@ var welcomeForm = document.getElementById("welcome-form");
 var nameInput = document.getElementById("name-input");
 var practiceFlow = document.getElementById("practice-flow");
 var welcomeName = document.getElementById("welcome-name");
+var bookSelect = document.getElementById("book-select");
+var chapterSelect = document.getElementById("chapter-select");
+var verseSelect = document.getElementById("verse-select");
+var loadVerseButton = document.getElementById("load-verse");
 var verseReference = document.getElementById("verse-reference");
 var verseText = document.getElementById("verse-text");
 var peekVerse = document.getElementById("peek-verse");
@@ -29,6 +37,63 @@ function getSavedName() {
 
 function saveName(name) {
   localStorage.setItem(STORAGE_KEY, name);
+}
+
+function verseCacheKey(reference) {
+  return VERSE_CACHE_PREFIX + reference;
+}
+
+function getCachedVerseText(reference) {
+  return localStorage.getItem(verseCacheKey(reference)) || "";
+}
+
+function saveCachedVerseText(reference, text) {
+  localStorage.setItem(verseCacheKey(reference), text);
+}
+
+function formatReference(bookName, chapter, verse) {
+  return bookName + " " + chapter + ":" + verse;
+}
+
+function fillNumberOptions(select, count) {
+  select.innerHTML = "";
+  for (var i = 1; i <= count; i++) {
+    var option = document.createElement("option");
+    option.value = String(i);
+    option.textContent = String(i);
+    select.appendChild(option);
+  }
+}
+
+function fillBookOptions() {
+  bookSelect.innerHTML = "";
+  for (var i = 0; i < BIBLE_BOOKS.length; i++) {
+    var option = document.createElement("option");
+    option.value = BIBLE_BOOKS[i].name;
+    option.textContent = BIBLE_BOOKS[i].name;
+    bookSelect.appendChild(option);
+  }
+}
+
+function onBookChange() {
+  var book = findBibleBook(bookSelect.value);
+  var chapterCount = book ? book.chapters.length : 0;
+  fillNumberOptions(chapterSelect, chapterCount);
+  onChapterChange();
+}
+
+function onChapterChange() {
+  var chapter = parseInt(chapterSelect.value, 10) || 1;
+  var verseCount = versesInChapter(bookSelect.value, chapter);
+  fillNumberOptions(verseSelect, verseCount);
+}
+
+function setPickerToReference(bookName, chapter, verse) {
+  bookSelect.value = bookName;
+  onBookChange();
+  chapterSelect.value = String(chapter);
+  onChapterChange();
+  verseSelect.value = String(verse);
 }
 
 function showNameForm() {
@@ -56,14 +121,20 @@ function updateVerseVisibility() {
   }
 }
 
-function showPractice(name) {
-  welcomeName.textContent = name;
-  verseReference.textContent = BUILT_IN_REFERENCE;
-  verseText.textContent = BUILT_IN_VERSE;
+function setCurrentVerse(reference, text) {
+  currentReference = reference;
+  currentVerseText = text;
+  verseReference.textContent = reference;
+  verseText.textContent = text;
   practiceInput.value = "";
   encouragement.hidden = true;
   congratulations.hidden = true;
   showVerse();
+}
+
+function showPractice(name) {
+  welcomeName.textContent = name;
+  setCurrentVerse(currentReference, currentVerseText);
 
   nameScreen.hidden = true;
   practiceFlow.hidden = false;
@@ -98,7 +169,7 @@ function showCongratulations() {
 function checkPracticeInput() {
   updateVerseVisibility();
 
-  var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
+  var correct = isVerseCorrect(practiceInput.value, currentVerseText);
 
   if (!correct) {
     congratulations.hidden = true;
@@ -110,7 +181,7 @@ function checkPracticeInput() {
 }
 
 function onSubmitPractice() {
-  var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
+  var correct = isVerseCorrect(practiceInput.value, currentVerseText);
 
   if (correct) {
     showCongratulations();
@@ -125,7 +196,47 @@ function onSubmitPractice() {
   }, 150);
 }
 
+function onLoadVerse() {
+  var bookName = bookSelect.value;
+  var chapter = parseInt(chapterSelect.value, 10);
+  var verse = parseInt(verseSelect.value, 10);
+  var reference = formatReference(bookName, chapter, verse);
+
+  var cached = getCachedVerseText(reference);
+  if (cached) {
+    setCurrentVerse(reference, cached);
+    return;
+  }
+
+  loadVerseButton.disabled = true;
+
+  fetch(buildNltPassageUrl(bookName, chapter, verse))
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Could not load verse");
+      }
+      return response.text();
+    })
+    .then(function (html) {
+      var text = cleanNltPassageHtml(html);
+      if (!text) {
+        throw new Error("Empty verse");
+      }
+      saveCachedVerseText(reference, text);
+      setCurrentVerse(reference, text);
+    })
+    .catch(function () {
+      // Friendly failure messages come in step 7.
+    })
+    .then(function () {
+      loadVerseButton.disabled = false;
+    });
+}
+
 function start() {
+  fillBookOptions();
+  setPickerToReference("Psalm", 119, 11);
+
   var name = getSavedName();
   if (name) {
     showPractice(name);
@@ -146,6 +257,10 @@ welcomeForm.addEventListener("submit", function (event) {
   saveName(name);
   showPractice(name);
 });
+
+bookSelect.addEventListener("change", onBookChange);
+chapterSelect.addEventListener("change", onChapterChange);
+loadVerseButton.addEventListener("click", onLoadVerse);
 
 practiceInput.addEventListener("input", checkPracticeInput);
 
