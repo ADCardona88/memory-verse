@@ -49,7 +49,18 @@ function showPractice(name) {
 
 function checkPracticeInput() {
   var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
-  congratulations.hidden = !correct;
+
+  if (!correct) {
+    congratulations.hidden = true;
+    return;
+  }
+
+  // Dismiss the phone keyboard so congratulations is not covered.
+  practiceInput.blur();
+  congratulations.hidden = false;
+  setTimeout(function () {
+    congratulations.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, 150);
 }
 
 function start() {

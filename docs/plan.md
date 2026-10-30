@@ -51,8 +51,8 @@ Each step is one small thing she can see, with a sentence that says how we know 
 1. **Name and welcome.** The first time she opens the app, she types her name. After that it greets her.
    I'll know it works when I enter a name, reload the page, and see "Welcome back, [name]."
 
-2. **Practice one built-in verse.** Use one short verse built into the app (no internet yet). She reads it, moves to a text box where the verse is hidden, and types it from memory. Congratulations appear on their own as soon as it's correct, using the rules in "What counts as correct."
-   I'll know it works when I type the verse with different capitals and no punctuation and still get congratulations without pressing anything.
+2. **Practice one built-in verse.** Use one short verse built into the app (no internet yet). She reads it, moves to a text box where the verse is hidden, and types it from memory. Congratulations appear on their own as soon as it's correct, using the rules in "What counts as correct." When she gets it right, the keyboard closes so congratulations stays visible on the phone.
+   I'll know it works when I type the verse with different capitals and no punctuation and still get congratulations without pressing anything, and the keyboard is gone so I can read the message.
 
 3. **No pasting.** I'll know it works when I try to paste into the box and nothing goes in.
 
