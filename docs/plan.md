@@ -59,8 +59,8 @@ Each step is one small thing she can see, with a sentence that says how we know 
 4. **Encouragement when wrong.** A Submit button checks her answer. If it's wrong, she sees an encouraging verse, like Psalm 119:11 or Psalm 1, telling her to keep going.
    I'll know it works when I press Submit with a wrong answer and see the encouraging message.
 
-5. **Peeking clears the box.** If she scrolls back up to the verse while typing, the app asks: "Looking at the verse will clear what you typed. Continue?"
-   I'll know it works when I scroll up, confirm, and the box is empty with the verse showing.
+5. **Peeking clears the box.** As soon as she types anything, the verse hides and a "Tap to see the verse" message takes its place. Tapping it asks: "Looking at the verse will clear what you typed. Continue?" Confirm clears her typing and shows the verse again; cancel leaves her typing and keeps the verse hidden. If she empties the box by deleting, the verse comes back with no prompt.
+   I'll know it works when I type something, see the tap message instead of the verse, confirm, and the box is empty with the verse showing.
 
 6. **Pick any real verse.** A simple book, chapter, and verse picker loads the real NLT text from Tyndale. Only real verses can be picked.
    I'll know it works when I pick a verse and see its real NLT text, then practice it the same way as step 2.

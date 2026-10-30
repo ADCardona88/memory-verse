@@ -13,6 +13,7 @@ var practiceFlow = document.getElementById("practice-flow");
 var welcomeName = document.getElementById("welcome-name");
 var verseReference = document.getElementById("verse-reference");
 var verseText = document.getElementById("verse-text");
+var peekVerse = document.getElementById("peek-verse");
 var practiceInput = document.getElementById("practice-input");
 var submitPractice = document.getElementById("submit-practice");
 var encouragement = document.getElementById("encouragement");
@@ -37,6 +38,24 @@ function showNameForm() {
   nameInput.focus();
 }
 
+function showVerse() {
+  verseText.hidden = false;
+  peekVerse.hidden = true;
+}
+
+function hideVerseForTyping() {
+  verseText.hidden = true;
+  peekVerse.hidden = false;
+}
+
+function updateVerseVisibility() {
+  if (practiceInput.value.length > 0) {
+    hideVerseForTyping();
+  } else {
+    showVerse();
+  }
+}
+
 function showPractice(name) {
   welcomeName.textContent = name;
   verseReference.textContent = BUILT_IN_REFERENCE;
@@ -44,10 +63,26 @@ function showPractice(name) {
   practiceInput.value = "";
   encouragement.hidden = true;
   congratulations.hidden = true;
+  showVerse();
 
   nameScreen.hidden = true;
   practiceFlow.hidden = false;
   practiceFlow.scrollTop = 0;
+}
+
+function onPeekVerse() {
+  var confirmed = confirm(
+    "Looking at the verse will clear what you typed. Continue?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  practiceInput.value = "";
+  encouragement.hidden = true;
+  congratulations.hidden = true;
+  showVerse();
 }
 
 function showCongratulations() {
@@ -61,6 +96,8 @@ function showCongratulations() {
 }
 
 function checkPracticeInput() {
+  updateVerseVisibility();
+
   var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
 
   if (!correct) {
@@ -111,6 +148,8 @@ welcomeForm.addEventListener("submit", function (event) {
 });
 
 practiceInput.addEventListener("input", checkPracticeInput);
+
+peekVerse.addEventListener("click", onPeekVerse);
 
 submitPractice.addEventListener("click", onSubmitPractice);
 
