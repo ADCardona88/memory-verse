@@ -9,7 +9,26 @@
   <body>
     <main>
       <h1>Memory Verse</h1>
-      <p>Coming soon</p>
+
+      <section id="name-form" hidden>
+        <label for="name-input">What's your name?</label>
+        <form id="welcome-form">
+          <input
+            id="name-input"
+            type="text"
+            name="name"
+            maxlength="30"
+            autocomplete="name"
+            required
+          />
+          <button type="submit">Continue</button>
+        </form>
+      </section>
+
+      <section id="welcome" hidden>
+        <p>Welcome back, <span id="welcome-name"></span>.</p>
+      </section>
     </main>
+    <script src="app.js"></script>
   </body>
 </html>

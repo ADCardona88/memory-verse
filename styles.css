@@ -20,10 +20,63 @@ h1 {
   font-size: 3.5rem;
   font-weight: normal;
   letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+}
+
+p,
+label {
+  font-size: 1.75rem;
+  color: #3d5a45;
+}
+
+#name-form label {
+  display: block;
   margin-bottom: 1rem;
 }
 
-p {
-  font-size: 1.75rem;
-  color: #3d5a45;
+#welcome-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+#name-input {
+  width: min(100%, 20rem);
+  font-size: 1.5rem;
+  font-family: inherit;
+  color: #1a2e1f;
+  padding: 0.75rem 1rem;
+  border: 2px solid #3d5a45;
+  border-radius: 0.5rem;
+  background: #fff;
+  text-align: center;
+}
+
+#name-input:focus {
+  outline: 3px solid #7a9e82;
+  outline-offset: 2px;
+}
+
+button {
+  font-size: 1.5rem;
+  font-family: inherit;
+  color: #fff;
+  background: #2f5d3a;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  min-height: 3rem;
+  min-width: 10rem;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus {
+  background: #254a2e;
+}
+
+button:focus {
+  outline: 3px solid #7a9e82;
+  outline-offset: 2px;
 }
