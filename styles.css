@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f4f1;
+  color: #1a2e1f;
+  font-family: Georgia, "Times New Roman", serif;
+  text-align: center;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1.75rem;
+  color: #3d5a45;
+}
