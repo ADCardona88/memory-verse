@@ -157,6 +157,17 @@ button:focus {
   outline-offset: 2px;
 }
 
+#encouragement {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #5a7a62;
+  max-width: 28rem;
+}
+
+#encouragement[hidden] {
+  display: none;
+}
+
 #congratulations {
   font-size: 2rem;
   color: #2f5d3a;

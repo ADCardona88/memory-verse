@@ -14,6 +14,8 @@ var welcomeName = document.getElementById("welcome-name");
 var verseReference = document.getElementById("verse-reference");
 var verseText = document.getElementById("verse-text");
 var practiceInput = document.getElementById("practice-input");
+var submitPractice = document.getElementById("submit-practice");
+var encouragement = document.getElementById("encouragement");
 var congratulations = document.getElementById("congratulations");
 
 function getSavedName() {
@@ -40,6 +42,7 @@ function showPractice(name) {
   verseReference.textContent = BUILT_IN_REFERENCE;
   verseText.textContent = BUILT_IN_VERSE;
   practiceInput.value = "";
+  encouragement.hidden = true;
   congratulations.hidden = true;
 
   nameScreen.hidden = true;
@@ -47,19 +50,41 @@ function showPractice(name) {
   practiceFlow.scrollTop = 0;
 }
 
-function checkPracticeInput() {
-  var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
-
-  if (!correct) {
-    congratulations.hidden = true;
-    return;
-  }
-
+function showCongratulations() {
+  encouragement.hidden = true;
   // Dismiss the phone keyboard so congratulations is not covered.
   practiceInput.blur();
   congratulations.hidden = false;
   setTimeout(function () {
     congratulations.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, 150);
+}
+
+function checkPracticeInput() {
+  var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
+
+  if (!correct) {
+    congratulations.hidden = true;
+    encouragement.hidden = true;
+    return;
+  }
+
+  showCongratulations();
+}
+
+function onSubmitPractice() {
+  var correct = isVerseCorrect(practiceInput.value, BUILT_IN_VERSE);
+
+  if (correct) {
+    showCongratulations();
+    return;
+  }
+
+  // Wrong answer: show encouragement and leave what she typed in the box.
+  congratulations.hidden = true;
+  encouragement.hidden = false;
+  setTimeout(function () {
+    encouragement.scrollIntoView({ block: "center", behavior: "smooth" });
   }, 150);
 }
 
@@ -86,6 +111,8 @@ welcomeForm.addEventListener("submit", function (event) {
 });
 
 practiceInput.addEventListener("input", checkPracticeInput);
+
+submitPractice.addEventListener("click", onSubmitPractice);
 
 practiceInput.addEventListener("paste", function (event) {
   event.preventDefault();
