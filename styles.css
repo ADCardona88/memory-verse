@@ -114,6 +114,11 @@ button:focus {
   gap: 1.25rem;
 }
 
+.counters {
+  font-size: 1.25rem;
+  color: #5a7a62;
+}
+
 .verse-picker {
   display: flex;
   flex-wrap: wrap;

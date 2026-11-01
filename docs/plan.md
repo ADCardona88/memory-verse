@@ -67,7 +67,7 @@ Each step is one small thing she can see, with a sentence that says how we know 
 
 7. **Friendly failures.** I'll know it works when a verse can't load, or the iPad is offline, and she sees a friendly message instead of a broken page.
 
-8. **Counters.** Add the streak and verses-memorized counters, following "How the two counters work." Automatic tests pretend it's different days.
+8. **Counters (done).** Add the streak and verses-memorized counters, following "How the two counters work." Automatic tests pretend it's different days.
    I'll know it works when the tests show the first new verse today raises both counters, a second new verse raises only the count, and a repeat raises neither.
 
 9. **Streak resets.** I'll know it works when a test pretends she skipped a day and the streak goes back to zero.
@@ -89,3 +89,7 @@ Each step is one small thing she can see, with a sentence that says how we know 
 
 ## Known issues
 - Safari can offer to block the browser confirm pop-up used when she taps to see the verse. If she blocks it, peeking stops working. Fix later with our own in-page pop-up.
+
+## Things to improve
+Running list of polish and UX fixes for later — not version-one build steps.
+- Streak and verses-memorized sit under the welcome line on the read screen, so on iPad you often have to scroll up to see them after practicing. Keep them in view (or show them where she finishes).

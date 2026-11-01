@@ -1,4 +1,5 @@
 var STORAGE_KEY = "memoryVerseName";
+var PROGRESS_STORAGE_KEY = "memoryVerseProgress";
 var VERSE_CACHE_PREFIX = "memoryVerseText:";
 var MAX_NAME_LENGTH = 30;
 var LOAD_TIMEOUT_MS = 10000;
@@ -28,6 +29,10 @@ var practiceInput = document.getElementById("practice-input");
 var submitPractice = document.getElementById("submit-practice");
 var encouragement = document.getElementById("encouragement");
 var congratulations = document.getElementById("congratulations");
+var streakCount = document.getElementById("streak-count");
+var versesMemorizedCount = document.getElementById("verses-memorized-count");
+
+var progress = loadProgress();
 
 function getSavedName() {
   var saved = localStorage.getItem(STORAGE_KEY);
@@ -51,6 +56,42 @@ function getCachedVerseText(reference) {
 
 function saveCachedVerseText(reference, text) {
   localStorage.setItem(verseCacheKey(reference), text);
+}
+
+function loadProgress() {
+  var raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
+  if (!raw) {
+    return createEmptyProgress();
+  }
+
+  try {
+    var parsed = JSON.parse(raw);
+    return {
+      streak: parsed.streak || 0,
+      versesMemorized: parsed.versesMemorized || 0,
+      memorizedReferences: parsed.memorizedReferences || [],
+      lastStreakDate: parsed.lastStreakDate || "",
+    };
+  } catch (error) {
+    return createEmptyProgress();
+  }
+}
+
+function saveProgress(nextProgress) {
+  localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(nextProgress));
+}
+
+function updateCountersDisplay() {
+  streakCount.textContent = String(progress.streak);
+  versesMemorizedCount.textContent = String(progress.versesMemorized);
+}
+
+function recordCurrentVerseMemorized() {
+  var today = getTodayDate();
+  var next = recordMemorized(progress, currentReference, today);
+  progress = next;
+  saveProgress(progress);
+  updateCountersDisplay();
 }
 
 function formatReference(bookName, chapter, verse) {
@@ -153,6 +194,7 @@ function setCurrentVerse(reference, text) {
 
 function showPractice(name) {
   welcomeName.textContent = name;
+  updateCountersDisplay();
   setCurrentVerse(currentReference, currentVerseText);
 
   nameScreen.hidden = true;
@@ -179,6 +221,7 @@ function showCongratulations() {
   encouragement.hidden = true;
   // Dismiss the phone keyboard so congratulations is not covered.
   practiceInput.blur();
+  recordCurrentVerseMemorized();
   congratulations.hidden = false;
   setTimeout(function () {
     congratulations.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -196,6 +239,10 @@ function checkPracticeInput() {
     return;
   }
 
+  if (!congratulations.hidden) {
+    return;
+  }
+
   showCongratulations();
 }
 
@@ -203,7 +250,9 @@ function onSubmitPractice() {
   var correct = isVerseCorrect(practiceInput.value, currentVerseText);
 
   if (correct) {
-    showCongratulations();
+    if (congratulations.hidden) {
+      showCongratulations();
+    }
     return;
   }
 

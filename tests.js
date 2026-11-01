@@ -11,6 +11,11 @@ var nlt = require("./nlt.js");
 var cleanNltPassageHtml = nlt.cleanNltPassageHtml;
 var buildNltPassageUrl = nlt.buildNltPassageUrl;
 
+var progressModule = require("./progress.js");
+var getTodayDate = progressModule.getTodayDate;
+var createEmptyProgress = progressModule.createEmptyProgress;
+var recordMemorized = progressModule.recordMemorized;
+
 var VERSE =
   "I have hidden your word in my heart, that I might not sin against you.";
 
@@ -180,6 +185,54 @@ assert(
   buildNltPassageUrl("John", 3, 16) ===
     "https://api.nlt.to/api/passages?ref=John.3.16" &&
     buildNltPassageUrl("John", 3, 16).indexOf("key=") === -1
+);
+
+var dayA = "2024-01-15";
+var dayB = "2024-01-16";
+var firstNew = recordMemorized(createEmptyProgress(), "John 3:16", dayA);
+
+assert(
+  "first new verse today raises streak and count",
+  firstNew.streak === 1 && firstNew.versesMemorized === 1
+);
+
+var secondNew = recordMemorized(firstNew, "Psalm 119:11", dayA);
+
+assert(
+  "second new verse same day raises count only",
+  secondNew.streak === 1 && secondNew.versesMemorized === 2
+);
+
+var repeatVerse = recordMemorized(secondNew, "John 3:16", dayA);
+
+assert(
+  "repeat verse raises neither counter",
+  repeatVerse.streak === 1 &&
+    repeatVerse.versesMemorized === 2 &&
+    repeatVerse.memorizedReferences.length === 2
+);
+
+var nextDayFirst = recordMemorized(firstNew, "Romans 8:28", dayB);
+
+assert(
+  "next day first new verse raises streak to 2",
+  nextDayFirst.streak === 2 && nextDayFirst.versesMemorized === 2
+);
+
+// 9 PM local on Jan 15 — must stay that calendar day, not UTC's next day.
+var ninePmLocal = new Date(2024, 0, 15, 21, 0, 0);
+var eveningDate = getTodayDate(ninePmLocal);
+var utcIsoDate = ninePmLocal.toISOString().slice(0, 10);
+
+assert(
+  "9 PM local still counts as that calendar day",
+  eveningDate === "2024-01-15"
+);
+
+assert(
+  "evening date uses local time not UTC",
+  eveningDate === "2024-01-15" &&
+    (utcIsoDate === "2024-01-15" || eveningDate !== utcIsoDate)
 );
 
 console.log("");
