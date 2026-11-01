@@ -33,6 +33,7 @@ var streakCount = document.getElementById("streak-count");
 var versesMemorizedCount = document.getElementById("verses-memorized-count");
 
 var progress = loadProgress();
+applyMissedDayResetOnOpen();
 
 function getSavedName() {
   var saved = localStorage.getItem(STORAGE_KEY);
@@ -79,6 +80,15 @@ function loadProgress() {
 
 function saveProgress(nextProgress) {
   localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(nextProgress));
+}
+
+function applyMissedDayResetOnOpen() {
+  var next = applyMissedDayReset(progress, getTodayDate());
+  if (next === progress) {
+    return;
+  }
+  progress = next;
+  saveProgress(progress);
 }
 
 function updateCountersDisplay() {

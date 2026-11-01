@@ -14,6 +14,17 @@ function getTodayDate(now) {
   );
 }
 
+// Day before a YYYY-MM-DD local calendar date.
+function getPreviousDate(dateString) {
+  var parts = dateString.split("-");
+  var year = Number(parts[0]);
+  var month = Number(parts[1]) - 1;
+  var day = Number(parts[2]);
+  var date = new Date(year, month, day);
+  date.setDate(date.getDate() - 1);
+  return getTodayDate(date);
+}
+
 function createEmptyProgress() {
   return {
     streak: 0,
@@ -23,13 +34,32 @@ function createEmptyProgress() {
   };
 }
 
-function recordMemorized(progress, reference, today) {
-  var next = {
+function copyProgress(progress) {
+  return {
     streak: progress.streak,
     versesMemorized: progress.versesMemorized,
     memorizedReferences: progress.memorizedReferences.slice(),
     lastStreakDate: progress.lastStreakDate,
   };
+}
+
+// If last streak day was not today and not yesterday, streak is broken.
+function applyMissedDayReset(progress, today) {
+  var yesterday = getPreviousDate(today);
+  if (
+    progress.lastStreakDate === today ||
+    progress.lastStreakDate === yesterday
+  ) {
+    return progress;
+  }
+
+  var next = copyProgress(progress);
+  next.streak = 0;
+  return next;
+}
+
+function recordMemorized(progress, reference, today) {
+  var next = copyProgress(progress);
 
   if (next.memorizedReferences.indexOf(reference) !== -1) {
     return next;
@@ -39,7 +69,12 @@ function recordMemorized(progress, reference, today) {
   next.versesMemorized += 1;
 
   if (next.lastStreakDate !== today) {
-    next.streak += 1;
+    var yesterday = getPreviousDate(today);
+    if (next.lastStreakDate === yesterday) {
+      next.streak += 1;
+    } else {
+      next.streak = 1;
+    }
     next.lastStreakDate = today;
   }
 
@@ -49,7 +84,9 @@ function recordMemorized(progress, reference, today) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     getTodayDate: getTodayDate,
+    getPreviousDate: getPreviousDate,
     createEmptyProgress: createEmptyProgress,
+    applyMissedDayReset: applyMissedDayReset,
     recordMemorized: recordMemorized,
   };
 }

@@ -13,7 +13,9 @@ var buildNltPassageUrl = nlt.buildNltPassageUrl;
 
 var progressModule = require("./progress.js");
 var getTodayDate = progressModule.getTodayDate;
+var getPreviousDate = progressModule.getPreviousDate;
 var createEmptyProgress = progressModule.createEmptyProgress;
+var applyMissedDayReset = progressModule.applyMissedDayReset;
 var recordMemorized = progressModule.recordMemorized;
 
 var VERSE =
@@ -217,6 +219,33 @@ var nextDayFirst = recordMemorized(firstNew, "Romans 8:28", dayB);
 assert(
   "next day first new verse raises streak to 2",
   nextDayFirst.streak === 2 && nextDayFirst.versesMemorized === 2
+);
+
+var dayC = "2024-01-18";
+var skipped = applyMissedDayReset(nextDayFirst, dayC);
+
+assert(
+  "skipped a day resets streak to zero",
+  skipped.streak === 0 &&
+    skipped.versesMemorized === 2 &&
+    skipped.lastStreakDate === dayB
+);
+
+var afterGap = recordMemorized(skipped, "John 1:1", dayC);
+
+assert(
+  "new verse after a skip starts streak at 1",
+  afterGap.streak === 1 && afterGap.versesMemorized === 3
+);
+
+assert(
+  "day before Nov 2 2026 (after fall clock change)",
+  getPreviousDate("2026-11-02") === "2026-11-01"
+);
+
+assert(
+  "day before March 1 crosses the month",
+  getPreviousDate("2026-03-01") === "2026-02-28"
 );
 
 // 9 PM local on Jan 15 — must stay that calendar day, not UTC's next day.
