@@ -1,6 +1,7 @@
 var STORAGE_KEY = "memoryVerseName";
 var VERSE_CACHE_PREFIX = "memoryVerseText:";
 var MAX_NAME_LENGTH = 30;
+var LOAD_TIMEOUT_MS = 10000;
 
 var BUILT_IN_REFERENCE = "Psalm 119:11";
 var BUILT_IN_VERSE =
@@ -19,6 +20,7 @@ var bookSelect = document.getElementById("book-select");
 var chapterSelect = document.getElementById("chapter-select");
 var verseSelect = document.getElementById("verse-select");
 var loadVerseButton = document.getElementById("load-verse");
+var loadMessage = document.getElementById("load-message");
 var verseReference = document.getElementById("verse-reference");
 var verseText = document.getElementById("verse-text");
 var peekVerse = document.getElementById("peek-verse");
@@ -121,6 +123,22 @@ function updateVerseVisibility() {
   }
 }
 
+function hideLoadMessage() {
+  loadMessage.hidden = true;
+  loadMessage.textContent = "";
+}
+
+function showLoadMessage() {
+  var name = getSavedName() || welcomeName.textContent || "friend";
+  loadMessage.textContent =
+    "Sorry, " +
+    name +
+    ". I couldn’t get that verse to show you.\n" +
+    "Try again, and check that you’re still connected to the internet.\n" +
+    "If it still doesn’t work, it’s something on my end. Try again later.";
+  loadMessage.hidden = false;
+}
+
 function setCurrentVerse(reference, text) {
   currentReference = reference;
   currentVerseText = text;
@@ -129,6 +147,7 @@ function setCurrentVerse(reference, text) {
   practiceInput.value = "";
   encouragement.hidden = true;
   congratulations.hidden = true;
+  hideLoadMessage();
   showVerse();
 }
 
@@ -202,6 +221,8 @@ function onLoadVerse() {
   var verse = parseInt(verseSelect.value, 10);
   var reference = formatReference(bookName, chapter, verse);
 
+  hideLoadMessage();
+
   var cached = getCachedVerseText(reference);
   if (cached) {
     setCurrentVerse(reference, cached);
@@ -210,7 +231,14 @@ function onLoadVerse() {
 
   loadVerseButton.disabled = true;
 
-  fetch(buildNltPassageUrl(bookName, chapter, verse))
+  var controller = new AbortController();
+  var timeoutId = setTimeout(function () {
+    controller.abort();
+  }, LOAD_TIMEOUT_MS);
+
+  fetch(buildNltPassageUrl(bookName, chapter, verse), {
+    signal: controller.signal,
+  })
     .then(function (response) {
       if (!response.ok) {
         throw new Error("Could not load verse");
@@ -226,9 +254,10 @@ function onLoadVerse() {
       setCurrentVerse(reference, text);
     })
     .catch(function () {
-      // Friendly failure messages come in step 7.
+      showLoadMessage();
     })
     .then(function () {
+      clearTimeout(timeoutId);
       loadVerseButton.disabled = false;
     });
 }

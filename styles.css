@@ -148,6 +148,18 @@ button:focus {
   min-width: 8rem;
 }
 
+.load-message {
+  font-size: 1.25rem;
+  line-height: 1.45;
+  color: #5a7a62;
+  max-width: 28rem;
+  white-space: pre-line;
+}
+
+.load-message[hidden] {
+  display: none;
+}
+
 .nlt-attribution {
   font-size: 0.85rem;
   line-height: 1.35;
