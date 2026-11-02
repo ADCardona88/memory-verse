@@ -31,6 +31,11 @@ var encouragement = document.getElementById("encouragement");
 var congratulations = document.getElementById("congratulations");
 var streakCount = document.getElementById("streak-count");
 var versesMemorizedCount = document.getElementById("verses-memorized-count");
+var openHistoryButton = document.getElementById("open-history");
+var historyScreen = document.getElementById("history-screen");
+var historyEmpty = document.getElementById("history-empty");
+var historyList = document.getElementById("history-list");
+var historyBackButton = document.getElementById("history-back");
 
 var progress = loadProgress();
 applyMissedDayResetOnOpen();
@@ -150,10 +155,43 @@ function setPickerToReference(bookName, chapter, verse) {
 }
 
 function showNameForm() {
+  historyScreen.hidden = true;
   practiceFlow.hidden = true;
   nameScreen.hidden = false;
   nameFormSection.hidden = false;
   nameInput.focus();
+}
+
+function rebuildHistoryList() {
+  var references = progress.memorizedReferences;
+  historyList.innerHTML = "";
+
+  if (references.length === 0) {
+    historyEmpty.hidden = false;
+    historyList.hidden = true;
+    return;
+  }
+
+  historyEmpty.hidden = true;
+  historyList.hidden = false;
+
+  for (var i = 0; i < references.length; i++) {
+    var item = document.createElement("li");
+    item.textContent = references[i];
+    historyList.appendChild(item);
+  }
+}
+
+function showHistory() {
+  rebuildHistoryList();
+  nameScreen.hidden = true;
+  practiceFlow.hidden = true;
+  historyScreen.hidden = false;
+}
+
+function hideHistory() {
+  historyScreen.hidden = true;
+  practiceFlow.hidden = false;
 }
 
 function showVerse() {
@@ -207,6 +245,7 @@ function showPractice(name) {
   updateCountersDisplay();
   setCurrentVerse(currentReference, currentVerseText);
 
+  historyScreen.hidden = true;
   nameScreen.hidden = true;
   practiceFlow.hidden = false;
   practiceFlow.scrollTop = 0;
@@ -355,6 +394,9 @@ practiceInput.addEventListener("input", checkPracticeInput);
 peekVerse.addEventListener("click", onPeekVerse);
 
 submitPractice.addEventListener("click", onSubmitPractice);
+
+openHistoryButton.addEventListener("click", showHistory);
+historyBackButton.addEventListener("click", hideHistory);
 
 practiceInput.addEventListener("paste", function (event) {
   event.preventDefault();

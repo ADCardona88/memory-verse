@@ -119,6 +119,67 @@ button:focus {
   color: #5a7a62;
 }
 
+.history-entry {
+  font-size: 1.25rem;
+  color: #2f5d3a;
+  background: transparent;
+  border: 2px solid #7a9e82;
+  min-width: 8rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
+}
+
+.history-entry:hover,
+.history-entry:focus {
+  background: #e4ece6;
+  color: #254a2e;
+}
+
+#history-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  gap: 1.25rem;
+}
+
+#history-screen[hidden] {
+  display: none;
+}
+
+.history-empty {
+  font-size: 1.5rem;
+  color: #5a7a62;
+}
+
+.history-empty[hidden] {
+  display: none;
+}
+
+.history-list {
+  list-style: none;
+  width: min(100%, 28rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.history-list[hidden] {
+  display: none;
+}
+
+.history-list li {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #1a2e1f;
+  padding: 0.75rem 1rem;
+  border: 2px solid #c5d6c9;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
 .verse-picker {
   display: flex;
   flex-wrap: wrap;
