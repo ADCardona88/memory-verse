@@ -1,5 +1,3 @@
-var STORAGE_KEY = "memoryVerseName";
-var PROGRESS_STORAGE_KEY = "memoryVerseProgress";
 var VERSE_CACHE_PREFIX = "memoryVerseText:";
 var MAX_NAME_LENGTH = 30;
 var LOAD_TIMEOUT_MS = 10000;
@@ -40,18 +38,6 @@ var historyBackButton = document.getElementById("history-back");
 var progress = loadProgress();
 applyMissedDayResetOnOpen();
 
-function getSavedName() {
-  var saved = localStorage.getItem(STORAGE_KEY);
-  if (!saved) {
-    return "";
-  }
-  return saved.trim().slice(0, MAX_NAME_LENGTH);
-}
-
-function saveName(name) {
-  localStorage.setItem(STORAGE_KEY, name);
-}
-
 function verseCacheKey(reference) {
   return VERSE_CACHE_PREFIX + reference;
 }
@@ -62,29 +48,6 @@ function getCachedVerseText(reference) {
 
 function saveCachedVerseText(reference, text) {
   localStorage.setItem(verseCacheKey(reference), text);
-}
-
-function loadProgress() {
-  var raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
-  if (!raw) {
-    return createEmptyProgress();
-  }
-
-  try {
-    var parsed = JSON.parse(raw);
-    return {
-      streak: parsed.streak || 0,
-      versesMemorized: parsed.versesMemorized || 0,
-      memorizedReferences: parsed.memorizedReferences || [],
-      lastStreakDate: parsed.lastStreakDate || "",
-    };
-  } catch (error) {
-    return createEmptyProgress();
-  }
-}
-
-function saveProgress(nextProgress) {
-  localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(nextProgress));
 }
 
 function applyMissedDayResetOnOpen() {
