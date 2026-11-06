@@ -18,6 +18,12 @@ var createEmptyProgress = progressModule.createEmptyProgress;
 var applyMissedDayReset = progressModule.applyMissedDayReset;
 var recordMemorized = progressModule.recordMemorized;
 
+var storageModule = require("./storage.js");
+var getSavedName = storageModule.getSavedName;
+var saveName = storageModule.saveName;
+var loadProgress = storageModule.loadProgress;
+var saveProgress = storageModule.saveProgress;
+
 var VERSE =
   "I have hidden your word in my heart, that I might not sin against you.";
 
@@ -262,6 +268,52 @@ assert(
   "evening date uses local time not UTC",
   eveningDate === "2024-01-15" &&
     (utcIsoDate === "2024-01-15" || eveningDate !== utcIsoDate)
+);
+
+function createFakeStorage() {
+  var values = {};
+  return {
+    getItem: function (key) {
+      return Object.prototype.hasOwnProperty.call(values, key)
+        ? values[key]
+        : null;
+    },
+    setItem: function (key, value) {
+      values[key] = String(value);
+    },
+  };
+}
+
+var rememberStore = createFakeStorage();
+var rememberedProgress = {
+  streak: 3,
+  versesMemorized: 2,
+  memorizedReferences: ["John 3:16", "Psalm 119:11"],
+  lastStreakDate: "2024-01-16",
+};
+
+saveName("Ada", rememberStore);
+saveProgress(rememberedProgress, rememberStore);
+
+var reloadedName = getSavedName(rememberStore);
+var reloadedProgress = loadProgress(rememberStore);
+
+assert(
+  "saved name comes back after reload",
+  reloadedName === "Ada"
+);
+
+assert(
+  "saved streak and count come back after reload",
+  reloadedProgress.streak === 3 && reloadedProgress.versesMemorized === 2
+);
+
+assert(
+  "saved history comes back after reload",
+  reloadedProgress.memorizedReferences.length === 2 &&
+    reloadedProgress.memorizedReferences[0] === "John 3:16" &&
+    reloadedProgress.memorizedReferences[1] === "Psalm 119:11" &&
+    reloadedProgress.lastStreakDate === "2024-01-16"
 );
 
 console.log("");
