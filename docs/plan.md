@@ -89,7 +89,7 @@ Each step is one small thing she can see, with a sentence that says how we know 
 
 ## Known issues
 - Safari can offer to block the browser confirm pop-up used when she taps to see the verse. If she blocks it, peeking stops working. Fix later with our own in-page pop-up.
+- After a missed day, the streak still shows the old number until she memorizes a new verse; then it jumps to 1. It should show 0 as soon as she opens the app on a day after a gap (for example: memorize on day 1 and day 2 → streak 2; open on day 3 with no memorize yet → still 2; open on day 4 after missing day 3 → show 0; then memorizing starts a new streak at 1). Found in step 12 by changing the device date.
 
 ## Things to improve
-Running list of polish and UX fixes for later — not version-one build steps.
-- Streak and verses-memorized sit under the welcome line on the read screen, so on iPad you often have to scroll up to see them after practicing. Keep them in view (or show them where she finishes).
+Not version-one build steps. Usability is low right now: the screen is cluttered, and what to do next is not obvious—you have to figure out the flow instead of being led through it. Needs a broader redesign later, not small polish tweaks.
