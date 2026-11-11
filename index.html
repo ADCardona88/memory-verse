@@ -40,12 +40,10 @@
         </button>
 
         <div id="verse-picker" class="verse-picker">
-          <label for="book-select">Book</label>
-          <select id="book-select"></select>
-          <label for="chapter-select">Chapter</label>
-          <select id="chapter-select"></select>
-          <label for="verse-select">Verse</label>
-          <select id="verse-select"></select>
+          <select id="book-select" aria-label="Book"></select>
+          <select id="chapter-select" class="chapter-select" aria-label="Chapter"></select>
+          <span class="verse-picker-colon" aria-hidden="true">:</span>
+          <select id="verse-select" class="verse-select" aria-label="Verse"></select>
           <button type="button" id="load-verse">Load</button>
         </div>
 
